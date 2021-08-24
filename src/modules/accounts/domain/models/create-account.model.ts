@@ -1,4 +1,4 @@
-export class CreateAccountDto {
+export class CreateAccountModel {
   name: string;
   email: string;
   password: string;

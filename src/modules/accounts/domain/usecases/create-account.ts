@@ -1,6 +1,5 @@
-import { CreateAccountDto } from '../../presentation';
-import { AccountModel } from '../models';
+import { AccountModel, CreateAccountModel } from '../models';
 
 export interface CreateAccount {
-  execute(createAccountDto: CreateAccountDto): Promise<AccountModel>;
+  execute(createAccountModel: CreateAccountModel): Promise<AccountModel>;
 }
