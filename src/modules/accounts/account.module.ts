@@ -1,12 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import {
-  CreateAccountController,
-  DeleteAccountController,
-  GetAllAccountsController,
-  GetOneAccountController,
-  UpdateAccountController,
-} from './presentation/controllers';
+import { AccountsController } from './presentation/controllers';
 import {
   CreateAccountService,
   DeleteAccountService,
@@ -20,13 +14,7 @@ import { Account, AccountSchema } from './infra';
   imports: [
     MongooseModule.forFeature([{ name: Account.name, schema: AccountSchema }]),
   ],
-  controllers: [
-    CreateAccountController,
-    DeleteAccountController,
-    GetAllAccountsController,
-    GetOneAccountController,
-    UpdateAccountController,
-  ],
+  controllers: [AccountsController],
   providers: [
     CreateAccountService,
     DeleteAccountService,

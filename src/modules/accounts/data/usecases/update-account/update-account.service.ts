@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Account, AccountDocument } from '../../../infra';
-import { AccountModel } from '../../../domain';
+import { AccountModel, UpdateAccountModel } from '../../../domain';
 import { UpdateAccount } from '../../../domain';
-import { UpdateAccountDto } from '../../../presentation';
 
 @Injectable()
 export class UpdateAccountService implements UpdateAccount {
@@ -15,14 +14,14 @@ export class UpdateAccountService implements UpdateAccount {
 
   async execute(
     id: string,
-    updateAccountDto: UpdateAccountDto,
+    updateAccountModel: UpdateAccountModel,
   ): Promise<AccountModel> {
     const accountUpdated = await this.accountModel.findByIdAndUpdate(
       {
         _id: id,
       },
       {
-        $set: updateAccountDto,
+        $set: updateAccountModel,
       },
       { new: true },
     );
