@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Account, AccountDocument } from '../../../infra';
-import { DeleteResponse } from '../../../domain';
-import { DeleteAccount } from '../../../domain';
+
+import { Account, AccountDocument } from '~/modules/accounts/infra';
+import { DeleteResponse } from '~/modules/accounts/domain';
+import { DeleteAccount } from '~/modules/accounts/domain';
 
 @Injectable()
 export class DeleteAccountService implements DeleteAccount {

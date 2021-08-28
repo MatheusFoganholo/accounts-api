@@ -1,5 +1,5 @@
-import { UpdateAccountModel } from '../models';
-import { AccountModel } from '../models';
+import { AccountModel } from '~/modules/accounts/domain/models';
+import { UpdateAccountModel } from '~/modules/accounts/domain/models';
 
 export interface UpdateAccount {
   execute(

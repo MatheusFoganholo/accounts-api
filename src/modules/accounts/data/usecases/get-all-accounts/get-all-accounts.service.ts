@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Account, AccountDocument } from '../../../infra';
-import { AccountModel } from '../../../domain';
-import { GetAllAccounts } from '../../../domain';
+
+import { Account, AccountDocument } from '~/modules/accounts/infra';
+import { AccountModel } from '~/modules/accounts/domain';
+import { GetAllAccounts } from '~/modules/accounts/domain';
 
 @Injectable()
 export class GetAllAccountsService implements GetAllAccounts {

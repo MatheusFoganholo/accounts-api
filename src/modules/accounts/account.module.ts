@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AccountsController } from './presentation/controllers';
+
+import { Account, AccountSchema } from '~/modules/accounts/infra';
+import { AccountsController } from '~/modules/accounts/presentation/controllers';
 import {
   CreateAccountService,
   DeleteAccountService,
   GetAllAccountsService,
   GetOneAccountService,
   UpdateAccountService,
-} from './data';
-import { Account, AccountSchema } from './infra';
+} from '~/modules/accounts/data';
 
 @Module({
   imports: [

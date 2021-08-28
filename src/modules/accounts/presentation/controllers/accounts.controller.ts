@@ -7,14 +7,18 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateAccountModel, UpdateAccountModel } from '../../domain';
+
+import {
+  CreateAccountModel,
+  UpdateAccountModel,
+} from '~/modules/accounts/domain';
 import {
   CreateAccountService,
   DeleteAccountService,
   GetAllAccountsService,
   GetOneAccountService,
   UpdateAccountService,
-} from '../../data';
+} from '~/modules/accounts/data';
 
 @Controller('accounts')
 export class AccountsController {
