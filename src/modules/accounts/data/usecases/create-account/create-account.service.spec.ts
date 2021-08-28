@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { Test } from '@nestjs/testing';
 
 import { Account, AccountDocument } from '~/modules/accounts/infra/';
-import { createAccountShape } from '~/modules/accounts/utils';
+import { factories } from '~/modules/accounts/test';
 
 import { CreateAccountService } from './create-account.service';
 
@@ -36,13 +36,15 @@ describe('CreateAccountService', () => {
   });
 
   it('Should create a account with correct values', async () => {
+    const mockedAccount = factories.createAccount.build();
+
     jest
       .spyOn(accountModel, 'create')
-      .mockImplementation(async () => createAccountShape);
+      .mockImplementation(async () => mockedAccount);
 
-    const savedAccount = await createAccountService.execute(createAccountShape);
+    const savedAccount = await createAccountService.execute(mockedAccount);
 
-    expect(savedAccount).toEqual(createAccountShape);
+    expect(savedAccount).toEqual(mockedAccount);
     expect(accountModel.create).toHaveBeenCalled();
   });
 });
