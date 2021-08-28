@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Account, AccountDocument } from '../../../infra';
-import { AccountModel } from '../../../domain';
-import { CreateAccount, CreateAccountModel } from '../../../domain';
+
+import { Account, AccountDocument } from '~/modules/accounts/infra';
+import { AccountModel } from '~/modules/accounts/domain';
+import { CreateAccount, CreateAccountModel } from '~/modules/accounts/domain';
 
 @Injectable()
 export class CreateAccountService implements CreateAccount {
@@ -12,8 +13,8 @@ export class CreateAccountService implements CreateAccount {
     private accountModel: Model<AccountDocument>,
   ) {}
 
-  execute(createAccountModel: CreateAccountModel): Promise<AccountModel> {
-    const account = new this.accountModel(createAccountModel);
-    return account.save();
+  async execute(createAccountModel: CreateAccountModel): Promise<AccountModel> {
+    const account = await this.accountModel.create(createAccountModel);
+    return account;
   }
 }
