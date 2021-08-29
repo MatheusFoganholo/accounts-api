@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Account, AccountDocument } from '~/modules/accounts/infra';
-import { AccountModel } from '~/modules/accounts/domain';
+import { CreateAccountResponse } from '~/modules/accounts/domain';
 import { CreateAccount, CreateAccountModel } from '~/modules/accounts/domain';
 
 @Injectable()
@@ -13,8 +13,22 @@ export class CreateAccountService implements CreateAccount {
     private accountModel: Model<AccountDocument>,
   ) {}
 
-  async execute(createAccountModel: CreateAccountModel): Promise<AccountModel> {
+  async execute(
+    createAccountModel: CreateAccountModel,
+  ): Promise<CreateAccountResponse> {
+    const accountAlreadyExists = await this.accountModel
+      .find({
+        email: createAccountModel.email,
+      })
+      .exec();
+
+    if (accountAlreadyExists.length)
+      return {
+        success: false,
+        error: 'This email is already in use. Try another one.',
+      };
+
     const account = await this.accountModel.create(createAccountModel);
-    return account;
+    return { success: true, data: account };
   }
 }
