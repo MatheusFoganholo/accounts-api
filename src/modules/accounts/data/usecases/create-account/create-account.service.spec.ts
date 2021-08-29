@@ -8,10 +8,7 @@ import { factories } from '~/modules/accounts/test';
 import { CreateAccountService } from './create-account.service';
 
 describe('CreateAccountService', () => {
-  const mockAccountModel = {
-    create: jest.fn(),
-    save: jest.fn(),
-  };
+  const mockAccountModel = { create: jest.fn() };
 
   let createAccountService: CreateAccountService;
   let accountModel: Model<AccountDocument>;
