@@ -3,10 +3,13 @@ import {
   Body,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Patch,
   Post,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import {
   CreateAccountModel,
@@ -41,8 +44,21 @@ export class AccountsController {
   }
 
   @Post()
-  create(@Body() createAccountModel: CreateAccountModel) {
-    return this.createAccountService.execute(createAccountModel);
+  async create(
+    @Body() createAccountModel: CreateAccountModel,
+    @Res() response: Response,
+  ) {
+    const httpResponse = await this.createAccountService.execute(
+      createAccountModel,
+    );
+
+    return response
+      .status(
+        httpResponse.error
+          ? HttpStatus.UNPROCESSABLE_ENTITY
+          : HttpStatus.CREATED,
+      )
+      .json(httpResponse);
   }
 
   @Patch(':id')
