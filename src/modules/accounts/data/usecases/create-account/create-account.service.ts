@@ -17,12 +17,15 @@ export class CreateAccountService implements CreateAccount {
     createAccountModel: CreateAccountModel,
   ): Promise<CreateAccountResponse> {
     const accountAlreadyExists = await this.accountModel
-      .find({
-        email: createAccountModel.email,
-      })
+      .findOne(
+        {
+          email: createAccountModel.email,
+        },
+        { _id: 0, __v: 0 },
+      )
       .exec();
 
-    if (accountAlreadyExists.length)
+    if (accountAlreadyExists)
       return {
         success: false,
         error: 'This email is already in use. Try another one.',
