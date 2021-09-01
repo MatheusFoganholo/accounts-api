@@ -2,13 +2,17 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Test } from '@nestjs/testing';
 
-import { Account, AccountDocument } from '~/modules/accounts/infra/';
+import { Account, AccountDocument } from '~/modules/accounts/infra';
 import { factories } from '~/modules/accounts/test';
 
 import { CreateAccountService } from './create-account.service';
 
 describe('CreateAccountService', () => {
-  const mockAccountModel = { create: jest.fn() };
+  const mockExec = jest.fn();
+  const mockAccountModel = () => ({
+    create: jest.fn(),
+    findOne: jest.fn(() => ({ exec: mockExec })),
+  });
 
   let createAccountService: CreateAccountService;
   let accountModel: Model<AccountDocument>;
@@ -19,7 +23,7 @@ describe('CreateAccountService', () => {
         CreateAccountService,
         {
           provide: getModelToken(Account.name),
-          useValue: mockAccountModel,
+          useFactory: mockAccountModel,
         },
       ],
     }).compile();
@@ -37,11 +41,26 @@ describe('CreateAccountService', () => {
 
     jest
       .spyOn(accountModel, 'create')
-      .mockImplementation(async () => mockedAccount);
+      .mockImplementationOnce(async () => mockedAccount);
 
     const savedAccount = await createAccountService.execute(mockedAccount);
 
-    expect(savedAccount).toEqual(mockedAccount);
-    expect(accountModel.create).toHaveBeenCalled();
+    expect(savedAccount.data).toEqual(mockedAccount);
+    expect(accountModel.create).toHaveBeenCalledWith(mockedAccount);
+  });
+
+  it('Should not create a account if email already exists', async () => {
+    const account = factories.account.build();
+    const mockedAccount = factories.createAccount.build();
+
+    mockExec.mockReturnValueOnce(Promise.resolve(account));
+
+    const createAccountTentative = await createAccountService.execute(
+      mockedAccount,
+    );
+
+    expect(createAccountTentative.success).toBeFalsy();
+    expect(createAccountTentative.data).toBeFalsy();
+    expect(createAccountTentative.error).toBeTruthy();
   });
 });
